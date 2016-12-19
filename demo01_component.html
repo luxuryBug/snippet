@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>demo01</title>
+</head>
+<style type="text/css">
+	div {
+		margin-bottom: 5px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<my-component></my-component>
+	</div>
+	<div id="example2">
+		<my-component></my-component>
+	</div>
+	<div id="example3">
+		<input type="text" v-model="n3">
+		<input type="text" v-model="myObj.name">
+		<my-component message="hello" myhtml="<b>大写的</b>" v-bind:parent-say="n3" v-bind:parent-count="1" v-bind:parent-obj="myObj"></my-component>
+		<child-cpt3 message="hello" myhtml="<b>大写的</b>" v-bind:parent-say="n3" v-bind:parent-count="1" v-bind:parent-obj="myObj"></child-cpt3>
+	</div>
+	<div id="example4">
+	<!-- v-bind:prop-e="parentE" -->
+		<my-component v-bind:prop-a="parentA" v-bind:prop-b="parentB" v-bind:prop-c="parentC" v-bind:prop-d="parentD" v-bind:prop-f="parentF" v-bind:prop-g="parentG"></my-component>
+	</div>
+	<div id="example5">
+		example5:{{total}}
+		<my-component v-on:increment="incrementTotal"></my-component>
+		<!-- v-on(自定义事件)来监听子组件触发的事件 -->
+		<my-component v-on:click.native="incrementTotal"></my-component>
+	</div>
+	<div id="example6">
+		<currency-input></currency-input>
+	</div>
+</body>
+ 
+</html>
+<script src="js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 1.先注册组件
+	Vue.component('my-component',{
+		template: '<div>I am a component!</div>'
+	});
+	// 2.创建根实例
+	new Vue({
+		el: '#example1'
+	});
+</script>
+
+<!-- 2.注册局部组件 -->
+<script>
+	var Child = {
+		'template': '<div>局部组件</div>'
+	};
+
+	// 局部组件将只在父模板中被使用
+	new Vue({
+		el: '#example2',
+		components: {
+			'my-component': Child
+		}
+	});
+</script>
+
+<!-- 3.构成组件(父子组件)+动态prop用v-bind:my-name="num"+javascript数字传递 -->
+<!-- 父组件通过props向子组件传递数据 -->
+<!-- prop 是单向传递的：父变子变，子变不影响父，还报错 -->
+<!-- 两种改变 prop 的情况:传递的数据被作为一个字符串赋值给新的变量++切断联系 -->
+<!-- prop子变父变:子组件与父组件指向同一块内存 -->
+<script>
+	// 注册子组件
+	// props子组件声明父组件传给他的数据
+	var childCpt3 = Vue.component('childCpt3',{
+		props: ['message','myhtml','parentSay','parentCount','parentObj'],
+		template: '<div>{{message}}and<span v-html="myhtml"></span>---<span>father say:<input type="text" v-model="parentSayToMe" /></span><span>father count:{{parentCount+2}}</span>---<span>father say:<input type="text" v-model="parentObj.name" /></span><div>',
+		data: function(){
+			return {
+				parentSayToMe: this.parentSay
+			};
+		}
+	});
+	new Vue({
+		el: '#example3',
+		components: {
+			'my-component': childCpt3
+		},
+		data: {
+			n3: 'aDRRRss',
+			myObj: {
+				name: 'lily',
+				age: 18
+			}
+		}
+	});
+</script>
+
+<!-- 4.prop验证 -->
+<!-- type类型不用引号，这里是原生构造器，也可以是自定义构造器，默认值为一个对象时必须用工厂函数返回 -->
+<!--  -->
+<script>
+	// 自定义构造器Student
+	function Student(name,age){
+		this.name = name || '猫小猫';
+		this.age = age || 4;
+	}
+	var myCpt4 = Vue.component('my-cpt4',{
+		props: {
+			// 一种类型
+			propA: String,
+			// 多种类型
+			propB: [String,Number,Boolean],
+			// 字符串且必填
+			propC: {
+				type: String,
+				required: true
+			},
+			// 有默认值
+			propD: {
+				default: 100
+			},
+			// 有默认值为对象
+			propE: {
+				type: Object,
+				default: function(){
+					return {
+						name: '阳小阳'
+					}
+				}
+			},
+			// 自定义验证函数
+			propF: {
+				validator: function(value){
+					return value > 10
+				}
+			},
+			propG: Student
+		},
+		template: '<div>myCpt4:{{propA}}---{{propB}}---{{propC}}---{{propD}}---{{propE}}---{{propF}}---{{propG}}<div>'
+	});
+
+	var stuA = new Student();
+
+	new Vue({
+		el: '#example4',
+		components: {
+			'myComponent': myCpt4
+		},
+		data: {
+			parentA: 'parentA',
+			parentB: true,
+			parentC: 'true',
+			parentD: 4,
+			// parentE: {name: '洛小洛'},
+			parentF: 11,
+			parentG: stuA,
+		}
+	});
+</script>
+
+<!-- 5.自定义事件(子组件向父组件传递数据)v-on绑定自定义事件 -->
+<!-- $emit触发事件$on监听事件 -->
+<!-- 监听组件根元素原生事件v-on:click.native -->
+<script>
+	var myCpt5 = Vue.component('my-cpt5',{
+		template: '<div>myCpt5:<button v-on:click="increment">{{counter}}</button></div>',
+		data: function(){
+			return {
+				counter: 0,
+			}
+		},
+		methods: {
+			increment: function(){
+				this.counter ++;
+				// 触发事件
+				this.$emit('increment');
+			}
+		}
+	});
+
+	new Vue({
+		el: '#example5',
+		components: {
+			'myComponent': myCpt5
+		},
+		data: {
+			total: 0
+		},
+		methods: {
+			incrementTotal: function(){
+				this.total ++;
+			}
+		}
+	});
+</script>
+
+<!-- 6.自定义事件的表单输入控件 -->
+<script>
+	var myCpt6 = Vue.component('myCpt6',{
+		template: '<div>myCpt6:<input type="text" v-bind:value="value" v-on:input="updateValue($event.target.value)" /></div>',
+		data: function(){
+			return {
+				value: 1
+			}
+		},
+		methods: {
+			updateValue: function(newVal){
+				var formattedValue = newVal.trim().slice(0,newVal.indexOf('.')+3);
+				if(formattedValue !== newVal){
+					// 手动覆盖以保持一致
+					this.$refs.input.value = formattedValue;
+				}
+
+			}
+		}
+	});
+	new Vue({
+		el: '#example6',
+		components: {
+			'currencyInput': myCpt6
+		}
+	});
+</script>
+
+
+
