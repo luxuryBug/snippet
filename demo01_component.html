@@ -5,6 +5,9 @@
 	<title>demo01</title>
 </head>
 <style type="text/css">
+	* {
+		font-size: 14px;
+	}
 	div {
 		margin-bottom: 5px;
 	}
@@ -29,12 +32,14 @@
 	</div>
 	<div id="example5">
 		example5:{{total}}
+		<!-- 01.v-on(自定义事件)来监听子组件触发的事件 -->
 		<my-component v-on:increment="incrementTotal"></my-component>
-		<!-- v-on(自定义事件)来监听子组件触发的事件 -->
+		<!-- 02.v-on(原生事件.native)来监听子组件触发的事件 -->
 		<my-component v-on:click.native="incrementTotal"></my-component>
 	</div>
 	<div id="example6">
-		<currency-input></currency-input>
+		{{price}}
+		<currency-input v-bind:value="price"></currency-input>
 	</div>
 </body>
  
@@ -223,6 +228,9 @@
 		el: '#example6',
 		components: {
 			'currencyInput': myCpt6
+		},
+		data: {
+			price: 0
 		}
 	});
 </script>
