@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>demo01</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		.lazy:<input v-model.lazy="lazy"><br/>
+		.number:<input v-model.number="number"><br/>
+		.trim:<input v-model.trim="trim"><br/>
+	</div>
+</body>
+ 
+</html>
+<script src="js/vue.js"></script>
+
+<!-- 1.表单控件修饰符 -->
+<script>
+	var example1 =  new Vue({
+		el: '#example1',
+		data: {
+			lazy: "lazy",
+			number: "number",
+			trim: "trim"
+		},
+		method: {
+
+		}
+	});
+</script>
+
+

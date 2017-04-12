@@ -33,12 +33,14 @@
 	<div id="example3">
 		<p class="title">构成组件(父子组件)+动态prop</p>
 		<input type="text" v-model="n3">
+		<input type="text" v-model="parentSize">
 		<input type="text" v-model="myObj.name">
 		<!-- <my-component message="hello" myhtml="<b>大写的</b>" v-bind:parent-say="n3" v-bind:parent-count="1" v-bind:parent-obj="myObj"></my-component> -->
-		<child-cpt3 message="hello" myhtml="<b>大写的</b>" v-bind:parent-say="n3" v-bind:parent-count="1" v-bind:parent-obj="myObj"></child-cpt3>
+		<child-cpt3 message="I'm message" myhtml="<b>大写的</b>" v-bind:parent-say="n3" v-bind:parent-count="1" v-bind:parent-obj="myObj" :parent-size="parentSize"></child-cpt3>
 	</div>
 	<div id="example4">
 	<!-- v-bind:prop-e="parentE" -->
+		parentF：<input type="text" v-model="parentF"><br/>
 		<my-component v-bind:prop-a="parentA" v-bind:prop-b="parentB" v-bind:prop-c="parentC" v-bind:prop-d="parentD" v-bind:prop-f="parentF" v-bind:prop-g="parentG"></my-component>
 	</div>
 	<div id="example5">
@@ -93,15 +95,20 @@
 	// 注册子组件
 	// props子组件声明父组件传给他的数据
 	var childCpt3 = Vue.component('childCpt3',{
-		props: ['message','myhtml','parentSay','parentCount','parentObj'],
-		template: '<div>{{message}}and<span v-html="myhtml"></span>---<span>father say:<input type="text" v-model="parentSayToMe" /></span><span>father count:{{parentCount+2}}</span>---<span>father say:<input type="text" v-model="parentObj.name" /></span><div>',
+		props: ['message','myhtml','parentSay','parentCount','parentObj','parentSize'],
+		template: '<div>{{message}}and<span v-html="myhtml"></span>---<span>father say:<input type="text" v-model="parentSay" /></span><span>father count:{{parentCount+2}}</span>---<span>father say:<input type="text" v-model="parentObj.name" /></span><div><br/>computedSize:<input v-model="computedSize">',
 		data: function(){
 			return {
-				parentSayToMe: this.parentSay
+				// parentSayToMe: this.parentSay,   // 定义了一个局部变量，并用prop值初始化parentSayToMe
 			};
+		},
+		computed: {
+			computedSize: function(){
+				return this.parentSize * 10;
+			}
 		}
 	});
-	new Vue({
+	var example3 = new Vue({
 		el: '#example3',
 		components: {
 			'my-component': childCpt3
@@ -111,7 +118,8 @@
 			myObj: {
 				name: 'lily',
 				age: 18
-			}
+			},
+			parentSize: 8
 		}
 	});
 </script>
@@ -149,6 +157,12 @@
 					}
 				}
 			},
+			// propE: {
+			// 	type: Object,
+			// 	default: {
+			// 		name: '阳小阳'  // 必须以工厂函数返回，否则会报错：[Vue warn]: Invalid default value for prop "propE": Props with type Object/Array must use a factory function to return the default value. 
+			// 	}
+			// },
 			// 自定义验证函数
 			propF: {
 				validator: function(value){
