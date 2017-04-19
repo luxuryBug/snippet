@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>03具名slot</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example">
+		<app-layout>
+			<!-- <h1 slot="header">我是header</h1> -->
+
+			<p>我是主体内容！！！</p>
+
+			<!-- <h1 slot="footer">我是footer</h1> -->
+		</app-layout>
+	</div> 
+</html>
+<script src="../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 1.先注册组件
+	// var appLayout = Vue.component('app-layout',{
+	// 	template: [
+	// 		'<div class="container">'+
+	// 			'<header><slot name="header">我是默认header</header>'+
+	// 			'<div class="main"><slot></slot></div>'+
+	// 			'<footer><slot name="footer">我是默认footer</footer>'+
+	// 		'</div>'
+	// 	].join('')
+	// });
+
+	// 1.先注册组件
+	var appLayout = Vue.component('app-layout',{
+		template: [
+			'<div class="container">'+
+				'<header><slot name="header"></slot></header>'+
+				'<div class="main"><slot></slot></div>'+
+				'<footer><slot name="footer"></slot></footer>'+
+			'</div>'
+		].join('')
+	});
+
+	// 2.vue实例
+	var app = new Vue({
+		el: '#example',
+		components: {
+			'app-layout': appLayout
+		}
+	})
+</script>
+
