@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>02_子组件索引$refs</title>
+	<title>07_内联模板</title>
 </head>
 <style type="text/css">
 	* {
@@ -25,24 +25,34 @@
  
 <body>
 	<div id="example1">
-		<user-profile ref="profile"></user-profile>
+		<h5>内联模板</h5>
+		<my-component ref="mycpt" inline-template>
+			<div>
+				<p>这里是内联模板！！！</p>
+				<p>{{name}}</p>
+			</div>
+		</my-component>
 	</div>
+
 </body>
  
 </html>
-<script src="../js/vue.js"></script>
+<script src="../../js/vue.js"></script>
 
 <!-- 1.注册全局组件 -->
 <script>
-	// 1.先注册组件
-	Vue.component('user-profile',{
-		template: '<div>I am a component!</div>'
-	});
-	// 2.创建根实例
+	// 文件树组件
+	var myCpt = Vue.component('my-component',{
+		data: function(){
+			return {
+				name: '小洛洛'
+			}
+		}
+	})
+	
 	var parent = new Vue({
 		el: '#example1'
 	})
 
-	var child = parent.$refs.profile;
+	// 报错：Maximum call stack size exceeded
 </script>
-

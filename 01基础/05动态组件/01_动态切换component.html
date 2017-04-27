@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>02_在组件内部进行更改</title>
+	<title>01_动态切换component</title>
 </head>
 <style type="text/css">
 	* {
@@ -32,22 +32,22 @@
 		<component :is="currentView"></component>	
 	</div> 
 </html>
-<script src="../js/vue.js"></script>
+<script src="../../js/vue.js"></script>
 
 <!-- 1.注册全局组件 -->
 <script>
 
-	var home = {
+	var home = Vue.component('home',{
 		template: '<h1>我是home！！！</h1>'
-	}
+	})
 
-	var login = {
+	var login = Vue.component('login',{
 		template: '<h1>我是login！！！</h1>'
-	}
+	})
 
-	var regester = {
+	var regester = Vue.component('regester',{
 		template: '<h1>我是regester！！！</h1>'
-	}
+	})
 
 	var app = new Vue({
 		el: '#example',
@@ -57,7 +57,7 @@
 			regester: regester
 		},
 		data: {
-			currentView: home,
+			currentView: 'home',
 			tabs: [
 				{
 					name: 'home',

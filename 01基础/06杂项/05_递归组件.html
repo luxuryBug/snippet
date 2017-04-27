@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>:vue</title>
+	<title>05_递归组件</title>
 </head>
 <style type="text/css">
 	* {
@@ -25,28 +25,42 @@
  
 <body>
 	<div id="example1">
-		<my-component v-show="ctrlShow">lalala</my-component>
+		<button @click="changeStopFlag">停止</button>
+		<recursion-component :stop="stopFlag"/>
 	</div>
 </body>
  
 </html>
-<script src="../js/vue.js"></script>
+<script src="../../js/vue.js"></script>
 
 <!-- 1.注册全局组件 -->
 <script>
 	// 1.先注册组件
-	var cpt1 = Vue.component('my-component',{
-		template: '<div>I am a component!</div>'
-	});
-	// 2.创建根实例
-	var example1 = new Vue({
-		el: '#example1',
-		components: {
-			'my-component': cpt1,
-		},
-		data: {
-			ctrlShow: false
+	Vue.component('recursion-component',{
+		name: 'stack-overflow',
+		template: '<div><stack-overflow></stack-overflow></div>',
+		props: ['stop'],
+		data: function(){
+			return {
+				myStop: this.stop
+			}
 		}
 	});
+
+
+	// 2.创建根实例
+	var parent = new Vue({
+		el: '#example1',
+		data: {
+			stopFlag: true
+		},
+		methods: {
+			changeStopFlag(){
+				this.stopFlag = false;
+			}
+		}
+	})
+
+	// 报错：Maximum call stack size exceeded
 </script>
 
