@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>01_编写可复用组件:弹出框选择商品类别</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<h5>父组件</h5>
+		商品类别：<input v-model="fm.category">
+		<hr>
+		<my-component
+			:foo="baz"
+			:bar="quz"
+			:quote="fm"
+			bind-key="category"
+			@event-a="doEventA"
+			@event-b="doEventB"
+		>
+			<p slot="main-text">传递给子组件，子组件需要分发的内容，标识main-text</p>
+			<!-- <p slot="slot2">我是父组件分发给子组件的第二个片段</p> -->
+		</my-component>
+	</div>
+</body>
+ 
+</html>
+<script src="../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	/**
+	 * 
+	 */
+	
+	// 1.先注册组件
+	Vue.component('my-component',{
+		template: [
+			'<div>'+
+				'<h5>子组件标题<h5>'+
+				'弹出框选择商品类别:<input v-model="myCategory" @input="changeValue($event)"><br>'+
+				'<div @click="eventA"><slot name="main-text"><slot></div>'+
+				'<div @click="eventB(\'b\',$event)">点击B</div>'+
+				'<slot name="slot2">我是默认slot2'+
+			'</div>'
+		].join(''),
+		props: ["quote","bindKey","foo","bar"],
+		data: function(){
+			return {
+				myFoo: this.foo,
+				myCategory: this.quote[this.bindKey]
+			}
+		},
+		methods: {
+			eventA(){
+				console.log('eventA');
+				// 父组件监听信号为event-a
+				// 发出event-a信号
+				this.$emit('event-a');
+			},
+			eventB(name,event){
+				console.log(this.key)
+				this.$emit('event-b');
+			},
+			changeValue(event){
+				console.log(this.myCategory)
+				this.quote[this.bindKey] = this.myCategory;
+			}
+		}
+	});
+	// 2.创建根实例
+	new Vue({
+		el: '#example1',
+		data: {
+				baz: "baz",
+				quz: "quz",
+				fm: {
+					category: '珠宝首饰'
+				}
+		},
+		methods: {
+			doEventA: function(){
+				console.log('doEventA');
+			},
+			doEventB: function(){
+				console.log('doEventB');
+			}
+		}
+	});
+</script>
+

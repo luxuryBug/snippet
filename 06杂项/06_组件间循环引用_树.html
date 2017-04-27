@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>06_组件间循环引用_树</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<h5>文件目录树</h5>
+		<div>
+			<tree-folder :floder="treeData"></tree-folder>
+		</div>
+	</div>
+
+</body>
+ 
+</html>
+<script src="../js/vue.js"></script>
+
+<!-- 树组件模板 -->
+<script type="x-template" id="treeFolderTemplate">
+	<p>
+		<span>{{floder.name}}</span>
+		<tree-folder-contents :children="floder.children">
+	</p>
+</script>
+
+<!-- 树节点组件模板 -->
+<script type="x-template" id="treeFolderContentsTemplate">
+	<ul>
+		<li v-for="child in children">
+			<tree-folder v-if="child.children" :floder="child"></tree-folder>
+			<span v-else>{{child.name}}</span>
+		</li>
+	</ul>
+</script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 文件树组件
+	Vue.component('tree-folder',{
+		template: '#treeFolderTemplate',
+		props: ["floder"]
+	})
+
+	// 文件树节点组件
+	Vue.component('tree-folder-contents',{
+		template: '#treeFolderContentsTemplate',
+		props: ["children"]
+	})
+
+
+	// 2.创建根实例
+	var treeData = {
+		name: "根节点",
+		children: [
+			{
+				name: 'html',
+				children: [
+					{
+						name: 'html5'
+					},
+					{
+						name: 'html4'
+					},
+					{
+						name: 'html3'
+					}
+				]
+			},
+			{
+				name: 'css',
+				children: [
+					{
+						name: 'css5',
+						children: [
+							{
+								name: 'css5'
+							},
+							{
+								name: 'css4'
+							},
+							{
+								name: 'css3'
+							}
+						]
+					},
+					{
+						name: 'css4'
+					},
+					{
+						name: 'css3'
+					}
+				]
+			},
+			{
+				name: 'js',
+				children: [
+					{
+						name: 'js5'
+					},
+					{
+						name: 'js4'
+					},
+					{
+						name: 'js3'
+					}
+				]
+			}
+		]
+	};
+	
+	var parent = new Vue({
+		el: '#example1',
+		data: {
+			treeData
+		}
+	})
+
+	// 报错：Maximum call stack size exceeded
+</script>
+
+
+
