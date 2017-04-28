@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>05_自定义过渡类名</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+	.fade-enter-active, .fade-leave-active {
+	  transition: opacity .5s
+	}
+	.fade-enter, .fade-leave-active {
+	  opacity: 0
+	}
+</style>
+ 
+<body>
+	<div id="demo">
+		<h5>1.给元素添加</h5>
+		<button @click="show = !show">toggle</button>
+		<transition name="fade">
+			<p v-if="show">这是一个段落</p>
+		</transition>	
+
+		<h5>2.给动态组件添加</h5>
+		<ul>
+			<li v-for="router in list" @click="changeRouter(router)">{{router.name}}</li>
+		</ul>
+		<transition name="fade">
+			<component :is="currRouter"></component>	
+		</transition>	
+	</div>
+</body>
+ 
+</html>
+<script src="../../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+
+	// 创建组件
+	Vue.component('home',{
+		template: '<p>我是home!!!</p>'
+	})
+	Vue.component('login',{
+		template: '<p>我是login!!!</p>'
+	})
+	Vue.component('user',{
+		template: '<p>我是user!!!</p>'
+	})
+
+	// 2.创建根实例
+	new Vue({
+		el: '#demo',
+		data: {
+			show: true,
+			list: [
+				{
+					name: 'home'
+				},
+				{
+					name: 'login'
+				},
+				{
+					name: 'user'
+				}
+			],
+			currRouter: 'home'
+		},
+		methods: {
+			changeRouter(router){
+				this.currRouter = router.name;
+			}
+		}
+	});
+</script>
+

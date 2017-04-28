@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>文档标题</title>
+</head>
+ 
+<body>
+	文档内容......
+</body>
+ 
+</html>
+<script type="text/javascript">
+	var o = {};
+	// 给对象o添加
+	Object.defineProperty(o,"grade",{
+		 value : 37
+	});
+
+	o.grade = 22;
+
+	console.log(o.grade);  // 37
+</script>
