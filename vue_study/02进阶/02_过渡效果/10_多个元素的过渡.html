@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>05_自定义过渡类名</title>
+	<title>10_多个元素的过渡</title>
 </head>
 <style type="text/css">
 	* {
@@ -31,19 +31,27 @@
  
 <body>
 	<div id="demo">
-		<h5>1.给元素添加</h5>
-		<button @click="show = !show">toggle</button>
-		<transition name="fade" >
-			<p v-if="show">这是一个段落</p>
-		</transition>	
 
-		<h5>2.给动态组件添加</h5>
+		<h5>切换当前router</h5>
 		<ul>
 			<li v-for="router in list" @click="changeRouter(router)">{{router.name}}</li>
 		</ul>
+
+		<!-- 添加过渡并没有过渡效果：vue为了效率对相同标签并没有替换元素，而是替换元素内容 -->
+		<!-- <transition name="fade">
+			<button v-if="currRouter == 'home'">home</button>
+			<button v-if="currRouter == 'login'">login</button>
+			<button v-if="currRouter == 'user'">user</button>
+		</transition>	 -->
+
 		<transition name="fade" mode="out-in">
-			<component :is="currRouter"></component>	
+			<button key="home" v-if="currRouter == 'home'">home</button>
+			<button key="login" v-if="currRouter == 'login'">login</button>
+			<button key="user" v-if="currRouter == 'user'">user</button>
 		</transition>	
+
+
+
 	</div>
 </body>
  
@@ -52,17 +60,6 @@
 
 <!-- 1.注册全局组件 -->
 <script>
-
-	// 创建组件
-	Vue.component('home',{
-		template: '<p>我是home!!!</p>'
-	})
-	Vue.component('login',{
-		template: '<p>我是login!!!</p>'
-	})
-	Vue.component('user',{
-		template: '<p>我是user!!!</p>'
-	})
 
 	// 2.创建根实例
 	new Vue({

@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>05_自定义过渡类名</title>
+	<title>01_单元素组件过渡</title>
 </head>
 <style type="text/css">
 	* {
@@ -33,7 +33,7 @@
 	<div id="demo">
 		<h5>1.给元素添加</h5>
 		<button @click="show = !show">toggle</button>
-		<transition name="fade" >
+		<transition name="fade">
 			<p v-if="show">这是一个段落</p>
 		</transition>	
 
@@ -41,7 +41,7 @@
 		<ul>
 			<li v-for="router in list" @click="changeRouter(router)">{{router.name}}</li>
 		</ul>
-		<transition name="fade" mode="out-in">
+		<transition name="fade">
 			<component :is="currRouter"></component>	
 		</transition>	
 	</div>
