@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>05_动态替换颜色_函数简写</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<span>选色：</span><input v-model="color"/><br />
+		<p v-color-swatch="{color: color}">这是一个段落</p>
+	</div>
+
+</body>
+ 
+</html>
+<script src="../../node_modules/jquery/dist/jquery.js"></script>
+<script src="../../js/vue.js"></script>
+
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 注册全局自定义指令
+	Vue.directive('color-swatch',function(el,binding){
+		el.style.backgroundColor = binding.value.color;
+	})
+	// 2.创建根实例
+	var example = new Vue({
+		el: '#example1',
+		data: {
+			color: 'red'
+		}
+	});
+</script>
+
