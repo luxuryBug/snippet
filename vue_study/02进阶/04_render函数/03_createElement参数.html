@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>:vue</title>
+	<title>03_createElement参数</title>
 </head>
 <style type="text/css">
 	* {
@@ -25,44 +25,36 @@
  
 <body>
 	<div id="example1">
-		<anchored-heading :level="level">
-			我是3号标题
+		<anchored-heading :level="1">
+			<slot>我是3号标题</slot>
 		</anchored-heading>
 	</div>
+
+
+	<!--<div>
+		<p>我是slot内容</p>
+		<h1>我是3号标题</h1>
+	</div> -->
+
 
 </body>
  
 </html>
 <script src="../../js/vue.js"></script>
 
-<script type="x-template" id="anchoredHeadingTemplate">
-	<div>
-		<h1 v-if="level === 1">
-			<slot></slot>
-		</h1>
-		<h2 v-if="level === 2">
-			<slot></slot>
-		</h2>
-		<h3 v-if="level === 3">
-			<slot></slot>
-		</h3>
-		<h4 v-if="level === 4">
-			<slot></slot>
-		</h4>
-		<h5 v-if="level === 5">
-			<slot></slot>
-		</h5>
-		<h6 v-if="level === 6">
-			<slot></slot>
-		</h6>
-	</div>
-</script>
-
 <!-- 1.注册全局组件 -->
 <script>
 	// 1.先注册heading组件
 	Vue.component('anchored-heading',{
-		template: '#anchoredHeadingTemplate',
+		render: function(createElement){
+			return createElement(
+				'div',
+				[
+					createElement('p','我是slot内容'),
+					createElement('h'+this.level,this.$slots.default)
+				]
+			)
+		},
 		props: {
 			level: {
 				type: Number,
