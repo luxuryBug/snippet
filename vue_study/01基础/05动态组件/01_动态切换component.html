@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>01_动态切换component</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example">
+		<h1>通过使用保留的 `component`元素 实现简单的页面切换</h1>	
+		<ul>
+			<li v-for="(item,index) in tabs" @click="cuttab(item)">{{index+1}}:{{item.name}}</li>
+		</ul>
+		<component :is="currentView"></component>	
+	</div> 
+</html>
+<script src="../../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+
+	var home = Vue.component('home',{
+		template: '<h1>我是home！！！</h1>'
+	})
+
+	var login = Vue.component('login',{
+		template: '<h1>我是login！！！</h1>'
+	})
+
+	var regester = Vue.component('regester',{
+		template: '<h1>我是regester！！！</h1>'
+	})
+
+	var app = new Vue({
+		el: '#example',
+		components: {
+			home: home,
+			login: login,
+			regester: regester
+		},
+		data: {
+			currentView: 'home',
+			tabs: [
+				{
+					name: 'home',
+					view: 'home'
+				},
+				{
+					name: 'login',
+					view: 'login'
+				},
+				{
+					name: 'regester',
+					view: 'regester'
+				}
+			]
+		},
+		methods: {
+			cuttab: function(item){
+				this.currentView = item.view;
+			}
+		}
+	})
+</script>
+

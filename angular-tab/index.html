@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>文档标题</title>
+
+	<script src="lib/jquery.js"></script>
+	<script src="lib/angular.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/baiduCtrl.js"></script>
+	<script src="js/tapdCtrl.js"></script>
+</head>
+<style type="text/css">
+	.header {
+		height: 100px;
+		background: yellow;
+	}
+
+	.inner {
+		height: 300px;
+		margin-top: 30px;
+		border: 1px dashed #ccc;
+	}
+
+	.inner iframe {
+		width: 100%;
+		height: 100%;
+	}
+
+	.content {
+		color: plum;
+	}
+</style>
+<script type="text/javascript">
+	var parent = {
+		name: '父页面',
+		age: 18
+	}
+</script>
+
+<body ng-app="app">
+	<div ng-controller="MainCtrl">
+		<div class="header">
+			文档头部: {{title}}
+		</div>
+		<ul>
+			<li id="{{info.id}}" ng-repeat="info in menu" ng-click="showTab(info)">{{info.name}}</li>
+		</ul>
+		<div class="content">
+			<!-- <div class="inner">
+				<div ng-include="'view/baidu.html'" ng-controller="baiduCtrl" ng-show="currTab == 1"></div>
+			</div> -->
+		</div>
+	</div>
+
+</body>
+
+</html>
+<script type="text/javascript">
+	var currTab = 1;
+	setCurrTab(1);
+	$('ul li').on('click', function () {
+		var index = $(this).attr('id');
+		setCurrTab(index);
+	})
+
+	function setCurrTab(index) {
+		currTab = index;
+		$('.content .inner').hide();
+		$('.content .inner').eq(index - 1).show();
+	}
+</script>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>08_静态组件</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<my-component title="琴"></my-component>
+		<my-component title="棋"></my-component>
+		<my-component title="书"></my-component>
+		<my-component title="画"></my-component>
+	</div>
+
+</body>
+ 
+</html>
+<script src="../../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 文件树组件
+	var myCpt = Vue.component('my-component',{
+		template: [
+			'<div v-once>'+
+				'<p>这是一大串静态内容.......</p>{{title}}'+
+			'</div>'
+		].join(''),
+		props: ["title"]
+	})
+	
+	var parent = new Vue({
+		el: '#example1'
+	})
+
+	// 报错：Maximum call stack size exceeded
+</script>

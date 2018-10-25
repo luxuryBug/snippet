@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>03_异步组件</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<async-component ref=""></async-component>
+		<button @click="changeSelComponent">动态切换组件</button>
+		<component :is="selComponent" ref="selComponent"></component>
+	</div>
+</body>
+ 
+</html>
+<script src="../../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 1.先注册组件
+	var asyncChild = Vue.component('async-component',function(resolve,reject){
+		setTimeout(function(){
+			resolve({
+				template: '<div>I am a async-component!</div>'
+			})
+		},1000)
+	});
+
+	var miniComponent = Vue.component('mini-component',{
+		template: '<div>I am mini-component!!!</div>'
+	})
+
+	// 2.创建根实例
+	var parent = new Vue({
+		el: '#example1',
+		data: {
+			selComponent: false
+		},
+		methods: {
+			changeSelComponent: function(){
+				this.selComponent = this.selComponent == 'async-component' ? 'mini-component' : 'async-component';
+			}
+		}
+	})
+</script>
+

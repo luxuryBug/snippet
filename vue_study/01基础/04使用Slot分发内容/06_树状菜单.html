@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>06_树状菜单</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example">
+		<awesome-list :items="items">
+			<template scope="props" slot="item">
+				<li>{{props.text}}</li>
+			</template>
+		</awesome-list>
+	</div> 
+
+</html>
+
+<script type="x-template" id="awesomeListTemplate">
+	<ul>
+		<slot name="item"
+			v-for="item in items"
+			:text="item.text">
+		</slot>		
+	</ul>
+</script>
+
+
+<script src="../../js/vue.js"></script>
+
+<script>
+	// 1.注册列表组件
+	var awesomeList = Vue.component('awesome-list',{
+		template: '#awesomeListTemplate',
+		props: ['items']
+	})
+
+	// 1.注册树状组件
+	var awesomeTreeList = Vue.component('awesome-list',{
+		template: '#awesomeListTemplate',
+		props: ['items']
+	})
+
+	var example = new Vue({
+		el: '#example',
+		data: {
+			items: [
+					{
+						text: 'parent01'
+					},
+					{
+						text: 'parent02'
+					},
+					{
+						text: 'parent03'
+					},
+				]
+		}
+	})
+</script>
+

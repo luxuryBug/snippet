@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>01_子组件向父组件$emit父组件v-on</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<span>count:{{count}}</span>
+		<my-component v-on:increment-u-u="addCount"></my-component>
+		<my-component v-on:click.native="addCount"></my-component>
+	</div>
+</body>
+ 
+</html>
+<script src="../../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+	// 1.先注册组件
+	var childCpt1 = Vue.component('my-component',{
+		template: [
+			'<button v-on:click="incrementUU">{{btn}}</button>'
+		].join(''),
+		methods: {
+			incrementUU: function(){
+				this.btn += 1;
+				this.$emit("increment-u-u");
+			}
+		},
+		data: function(){
+			return {
+				btn: 0
+			}
+		}
+	});
+	// 2.创建根实例
+	var example1 = new Vue({
+		el: '#example1',
+		components: {
+			myComponent: childCpt1
+		},
+		data: {
+			count: 0
+		},
+		methods: {
+			addCount: function(){
+				this.count += 1;
+			}
+		}
+	});
+</script>
+

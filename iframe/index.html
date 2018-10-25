@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>文档标题</title>
+</head>
+<style type="text/css">
+ 	.header {
+ 		height: 100px;
+ 		background: yellow;
+ 	}
+ 	.inner {
+ 		height: 300px;
+ 		margin-top: 30px;
+ 		border: 1px dashed #ccc;
+ 	}
+ 	.content {
+ 		color: plum;
+ 	}
+</style>
+<script type="text/javascript">
+	var parent = {
+		name: '父页面',
+		age: 18
+	}
+</script>
+<body>
+	<div class="header">
+		文档头部
+	</div>
+	<div class="inner">
+		<iframe src="inner1.html"></iframe>
+	</div>
+</body>
+ 
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>:vue</title>
+</head>
+<style type="text/css">
+	* {
+		font-size: 14px;
+	}
+	body {
+		width: 1000px;
+		margin: 0 auto;
+	}
+	div {
+		margin-bottom: 5px;
+	}
+	div[id^=example] {
+		/*border-top: 3px solid rgba(185, 117, 68, 0.4);*/
+		padding-top: 20px;
+		border-bottom: 1px dashed #ccc;
+		margin-bottom: 50px;
+	}
+</style>
+ 
+<body>
+	<div id="example1">
+		<my-component v-on:dogclick></my-component>
+		<cat-component></cat-component>
+	</div>
+</body>
+ 
+</html>
+<script src="../../js/vue.js"></script>
+
+<!-- 1.注册全局组件 -->
+<script>
+
+	// 空的Vue实例作为中央控制总线
+	var bus = new Vue();
+
+	// 1.组件1：狗
+	var cptDog = Vue.component('cptDog',{
+		template: [
+			'<div v-on:click="dogclick">组件(1)：点击触发dogclick事件--小狗说：{{dog}}</div>'
+		].join(''),
+		methods: {
+			dogclick: function(){
+				this.dog = this.dog == '...' ? '汪汪' : '...';
+				bus.$emit('dogclick');
+			}
+		},
+		data: function(){
+			return {
+				dog: '汪汪'
+			}
+		}
+	});
+
+	// 1.组件2:猫
+	var cptCat = Vue.component('cptCat',{
+		template: [
+			'<div v-on:click="catclick">组件(2)：点击触发catclick事件--小猫说：{{cat}}</div>'
+		].join(''),
+		methods: {
+			catclick: function(){
+				this.cat = this.cat == '...' ? '喵喵' : '...';
+				this.$emit('catclick');
+			}
+		},
+		data: function(){
+			return {
+				cat: '喵喵'
+			}
+		}
+	});
+
+	// 2.创建根实例
+	// 实现效果：猫和狗只能有一个在叫
+	var example1 = new Vue({
+		el: '#example1',
+		components: {
+			'my-component': cptDog,
+			'cat-component': cptCat
+		}
+	});
+</script>
+
