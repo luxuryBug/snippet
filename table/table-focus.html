@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>文档标题</title>
+</head>
+<style type="text/css">
+	* {margin: 0;padding: 0;}
+	.featureTable {
+	  width: 100%;
+	  height: auto;
+	  /*表格线重叠*/
+	  border-collapse: collapse;
+	}
+	/*主功能表头样式*/
+	.featureTable th {
+	  background-color: #E5F3FF;
+	}
+	/*主功能单元格样式*/
+	.featureTable th,
+	.featureTable td {
+	  border: 1px solid #A9A9A9;
+	  line-height: 28px;
+	  font-size: 14px;
+	  font-weight: normal;
+	  position: relative;
+	  height: 30px;
+	  text-align: center;
+	  /*英文数字强制换行*/
+	  word-break: break-all;
+	}
+	/*锁定表头：tbody第一行tr上边框为none*/
+	.featureTable.lockGridHead {
+	  tbody tr:first-child td,
+	  th {
+	    border-top: none;
+	  }
+	}
+	/*主功能表格单元格内复选框*/
+	.featureTable th input[type="checkbox"],
+	.featureTable td input[type="checkbox"] {
+	  vertical-align: middle;
+	  margin: 0;
+	}
+	/*主功能表格单元格内文本框*/
+	.featureTable td input[type="text"] {
+	  box-sizing: border-box;
+	  width: 100%;
+	  height: 100%;
+	  // min-height: 30px;
+	  border: 0;
+	  text-indent: 5px;
+	}
+	/*主功能表格单元格内数字框*/
+	.featureTable td input[type="number"] {
+	  box-sizing: border-box;
+	  width: 100%;
+	  height: 100%;
+	  // min-height: 30px;
+	  border: 0;
+	  text-indent: 5px;
+	}
+	/*主功能表格单元格内选择*/
+	.featureTable td select {
+	  box-sizing: border-box;
+	  width: 100%;
+	  height: 100%;
+	  // min-height: 30px;
+	  border: 0;
+	}
+	/*主功能表格 span元素*/
+	.featureTable td span {
+	  box-sizing: border-box;
+	  width: 100%;
+	  height: 100%;
+	  // min-height: 30px;
+	}
+</style>
+<style type="text/css">
+	.featureTable td input.select{
+		border: 1px solid blue;
+	}
+	.featureTable td.select input{
+		border: 1px solid blue;
+	}
+</style>
+<body>
+	<table class="featureTable" style="margin-top: 30px;">
+		<thead>
+			<th>编码</th>
+			<th>名称</th>
+			<th>金额</th>
+			<th>借方</th>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<input type="text" value="编码1">
+				</td>
+				<td id="td2">
+					<input type="text" value="编码2">
+				</td>
+				<td>
+					<input type="text">
+				</td>
+
+				<td>
+					<input type="text">
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="text">
+				</td>
+				<td>
+					<input type="text">
+				</td>
+				<td>
+					<input type="text" value="编码2">
+				</td>
+
+				<td>
+					<input type="text">
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+
+</html>
+
+<script src="../assets/jquery.js"></script>
+<script>
+
+	  //  disabled  后不触发
+		// $('table').find('td').attr('disabled',true);
+
+		// 当前获取焦点的input索引
+		var currInputIndex = 0;
+
+		$('table').find('td').eq(0).addClass('select').select();
+
+		$('body').on('keyup',function(event){
+			console.log(event.which);
+			if(event.which == 37 || event.which == 39 || event.which == 38 || event.which == 40 || event.which == 13){
+				
+				// e.preventDefault();
+				//37--左键，38--上键，39--右键，40--下键
+	    	currInputIndex++;
+	    	setInputSelect(currInputIndex);
+			}
+
+		});
+
+		// 点击表格内的input后，更新`当前input索引`
+		$('table td').on('click',function(e){
+			console.log(e);
+			var domList = $('table td');
+			for(var i=0;i<domList.length;i++){
+				if($(domList[i]).is(($(event.target)).parent('td'))){
+					currInputIndex = i;
+					setInputSelect(currInputIndex);
+				}
+			}
+		})
+
+		// 设置表格中某个单元格被选中获得select
+		function setInputSelect(index){
+			var inputs = $("table").find('td');
+      inputs.removeClass('select')
+    	$(inputs[currInputIndex]).addClass('select');
+    	$(inputs[currInputIndex]).find('input').select();
+		}
+</script>

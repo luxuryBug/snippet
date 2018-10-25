@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>inner1</title>
+</head>
+<style type="text/css">
+	
+</style>
+<body>
+	<div class="content">
+		<p>我是inner1的page</p>
+		<p>
+			YouTube宕机三里屯缉毒冯绍峰朋友圈晒照湖州天价小龙虾冯德伦舒淇晒照阳台挂镜辟邪张杰撞脸文根英赵丽颖父母来京男孩爬木雕身亡科大讯飞违规占地艾玛沃特森恋情张馨予被疑有孕搜狐视频被判侵权长生狂犬病赔偿
+		</p>
+	</div>
+	<input type="text" id="age">
+</body>
+ 
+</html>
+<script type="text/javascript">
+	// Uncaught DOMException: Blocked a frame with origin "null" from accessing a cross-origin frame.
+	// 1、获取不到上级parent的值
+	// 2、使用不了上级样式
+	document.querySelector('#age').setAttribute('value',parent.age);
+</script>
